@@ -1,0 +1,769 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PurrFect Home - Cat Adoption System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            position: relative;
+            isolation: isolate;
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            background: #0b0a10;
+        }
+
+        /* FULL-PAGE VIDEO */
+
+        .background-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: linear-gradient(
+                135deg,
+                rgba(10, 7, 13, 0.45),
+                rgba(49, 8, 34, 0.25),
+                rgba(10, 7, 13, 0.5)
+            );
+        }
+
+        /* HEADER */
+
+        .topbar {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 15px 5%;
+            background: rgba(15, 12, 20, 0.48);
+            border-bottom: 1px solid rgba(255, 105, 180, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            border-radius: 15px;
+            background: #ff2796;
+            font-size: 28px;
+            box-shadow: 0 4px 18px rgba(255, 39, 150, 0.3);
+        }
+
+        .brand h2 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .brand h2 span {
+            color: #ff65b4;
+        }
+
+        .brand small {
+            display: block;
+            margin-top: 4px;
+            color: #ffc0df;
+            letter-spacing: 2px;
+            font-size: 11px;
+        }
+
+        /* HEADER BUTTONS */
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 11px 19px;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease,
+                        border-color 0.3s ease,
+                        transform 0.2s ease;
+        }
+
+        nav a:hover {
+            background: #ff2796;
+            border-color: #ff83c2;
+            transform: translateY(-1px);
+        }
+
+        nav .login-link {
+            background: #ff2796;
+            border-color: #ff2796;
+        }
+
+        nav .login-link:hover {
+            background: #e9007c;
+            border-color: #ff83c2;
+        }
+
+        nav .admin-link {
+            background: rgba(15, 12, 20, 0.2);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        /* MAIN LOGIN CONTAINER */
+
+        .container {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 90%;
+            max-width: 780px;
+            margin: 26px auto;
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(15, 12, 20, 0.18);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+        }
+
+        /* HIDE LOGIN UNTIL A BUTTON IS CLICKED */
+
+        .container.login-hidden {
+            display: none;
+        }
+
+        /* WELCOME SECTION */
+
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            min-height: 350px;
+            padding: 20px;
+            background: rgba(15, 10, 18, 0.22);
+        }
+
+        .hero-text {
+            padding: 17px;
+            background: rgba(255, 39, 150, 0.25);
+            border: 1px solid rgba(255, 130, 195, 0.5);
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .eyebrow {
+            margin: 0 0 12px;
+            color: #ffd1e8;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .hero h1 {
+            margin: 10px 0 15px;
+            color: #fff;
+            font-size: 25px;
+            line-height: 1.3;
+            text-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        .hero-text p:last-child {
+            margin: 0;
+            color: #fff;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        /* LOGIN PANEL */
+
+        .login-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+            padding: 22px 20px;
+            background: rgba(13, 11, 19, 0.5);
+            border-left: 1px solid rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .login-heading {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .paw-decoration {
+            font-size: 26px;
+        }
+
+        .login-heading h2 {
+            margin: 7px 0 5px;
+            font-size: 23px;
+        }
+
+        .login-heading p {
+            margin: 0;
+            color: #d7cbd7;
+            font-size: 12px;
+        }
+
+        /* STUDENT / ADMIN TABS */
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .tab {
+            padding: 11px 6px;
+            background: transparent;
+            color: #c3b7c5;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: color 0.3s ease,
+                        border-color 0.3s ease;
+        }
+
+        .tab.active {
+            color: #ff65b4;
+            border-bottom-color: #ff2796;
+        }
+
+        .tab:hover {
+            color: #ffacd5;
+        }
+
+        /* INPUT FIELDS */
+
+        label {
+            display: block;
+            margin: 11px 0 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            min-width: 0;
+            padding: 11px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            outline: none;
+            font-size: 13px;
+        }
+
+        input:focus {
+            border-color: #ff65b4;
+            box-shadow: 0 0 0 2px rgba(255, 39, 150, 0.18);
+        }
+
+        input::placeholder {
+            color: #c8bdca;
+        }
+
+        /* PASSWORD BOX */
+
+        .password-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-right: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        .password-box:focus-within {
+            border-color: #ff65b4;
+        }
+
+        .password-box input {
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .password-box button {
+            flex-shrink: 0;
+            color: #ff83c2;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .password-box button:hover {
+            color: #fff;
+        }
+
+        /* LOGIN BUTTON */
+
+        .login-button {
+            width: 100%;
+            padding: 11px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background: #ff2796;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease,
+                        transform 0.2s ease;
+        }
+
+        .login-button:hover {
+            background: #e9007c;
+            transform: translateY(-2px);
+        }
+
+        .login-button:disabled {
+            opacity: 0.7;
+            cursor: wait;
+            transform: none;
+        }
+
+        /* ERROR AND FOOTER */
+
+        .error {
+            min-height: 0;
+            margin: 10px 0;
+            color: #ff9bc9;
+            font-size: 12px;
+        }
+
+        .footer-text {
+            margin-top: 18px;
+            text-align: center;
+            color: #d3c5d2;
+            font-size: 11px;
+        }
+
+        /* BACKGROUND MUSIC */
+
+        #purrMusicControl {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #purrMusicStatus {
+            display: none;
+            max-width: 230px;
+            padding: 9px 12px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #b63d70;
+            font: 14px Arial, sans-serif;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #purrMusicButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 56px;
+            height: 56px;
+            flex: 0 0 56px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            background: #ff2796;
+            color: #fff;
+            font-size: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 39, 150, 0.4);
+        }
+
+        #purrMusicButton:hover {
+            background: #e91e83;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media (max-width: 800px) {
+            .topbar {
+                align-items: center;
+                flex-wrap: wrap;
+                padding: 14px 5%;
+            }
+
+            .brand h2 {
+                font-size: 21px;
+            }
+
+            nav {
+                gap: 6px;
+            }
+
+            nav a {
+                padding: 9px 12px;
+                font-size: 12px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+                width: 92%;
+                margin: 25px auto 90px;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 24px 18px;
+            }
+
+            .hero-text {
+                padding: 22px;
+            }
+
+            .hero h1 {
+                font-size: 29px;
+            }
+
+            .hero-text p:last-child {
+                font-size: 14px;
+            }
+
+            .login-panel {
+                padding: 28px 22px;
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.18);
+            }
+
+            .login-heading h2 {
+                font-size: 25px;
+            }
+
+            label {
+                font-size: 13px;
+            }
+
+            input {
+                padding: 12px;
+                font-size: 14px;
+            }
+
+            .tab {
+                font-size: 14px;
+            }
+
+            .login-button {
+                padding: 12px;
+                font-size: 15px;
+            }
+
+            .footer-text {
+                font-size: 12px;
+            }
+
+            #purrMusicControl {
+                right: 15px;
+                bottom: 15px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            nav a {
+                flex: 1;
+            }
+
+            .brand-icon {
+                width: 43px;
+                height: 43px;
+                font-size: 24px;
+            }
+
+            .brand h2 {
+                font-size: 19px;
+            }
+
+            .brand small {
+                font-size: 9px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .login-button,
+            .tab,
+            nav a {
+                transition: none;
+            }
+        }
+    </style>
+
+    <script src="login.js" defer></script>
+</head>
+
+<body>
+
+    <!-- FULL-PAGE VIDEO BACKGROUND -->
+ <!-- FULL-PAGE VIDEO BACKGROUND -->
+<video class="background-video"
+       autoplay muted loop playsinline
+       aria-hidden="true">
+    <source src="cat_video_new.mp4" type="video/mp4">
+</video>
+
+    <div class="video-overlay"></div>
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="brand-icon">🐾</div>
+
+            <div>
+                <h2>PURR <span>FECT HOME</span></h2>
+                <small>CAT ADOPTION SYSTEM</small>
+            </div>
+        </div>
+
+        <nav>
+            <a href="#" id="userPortal" class="portal-button login-link">
+                Login
+            </a>
+
+            <a href="#" id="adminPortal" class="portal-button admin-link">
+                Admin Portal
+            </a>
+        </nav>
+
+    </header>
+
+    <!-- LOGIN CONTAINER: HIDDEN UNTIL BUTTON CLICKED -->
+    <main class="container login-hidden" id="loginContainer">
+
+        <!-- WELCOME SECTION -->
+        <section class="hero">
+            <div class="hero-text">
+
+                <p class="eyebrow">♥ Find Your Feline Companion</p>
+
+                <h1>Give A Furry Friend A Forever Home</h1>
+
+                <p>
+                    Welcome to PurrFect Home Cat Adoption Portal.
+                    Login to find your perfect feline companion
+                    or manage cat adoption activities.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- LOGIN SECTION -->
+        <section class="login-panel" id="login-panel">
+
+            <div class="login-heading">
+                <span class="paw-decoration">🐾</span>
+                <h2>Welcome Back!</h2>
+                <p>Please log in to continue.</p>
+            </div>
+
+            <div class="tabs">
+
+                <button type="button"
+                        id="studentTab"
+                        class="tab active">
+                    STUDENT
+                </button>
+
+                <button type="button"
+                        id="adminTab"
+                        class="tab">
+                    ADMIN
+                </button>
+
+            </div>
+
+            <form id="loginForm" action="login.php" method="POST">
+
+                <input type="hidden"
+                       name="role"
+                       id="role"
+                       value="student">
+
+                <label for="email" id="identityLabel">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    autocomplete="username"
+                    required>
+
+                <label for="password">Password</label>
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required>
+
+                    <button type="button" id="togglePassword">
+                        Show
+                    </button>
+
+                </div>
+
+                <p id="errorMessage"
+                   class="error"
+                   role="alert"></p>
+
+                <button type="submit"
+                        class="login-button"
+                        id="submitButton">
+                    Login as Student
+                </button>
+
+            </form>
+
+            <p class="footer-text">
+                🐾 Made with love for every cat. ♡
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- BACKGROUND MUSIC -->
+    <audio id="purrBackgroundMusic" loop preload="auto">
+        <source src="background_music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MUSIC CONTROL -->
+    <div id="purrMusicControl">
+
+        <span id="purrMusicStatus" role="status">
+            Music is paused ♡
+        </span>
+
+        <button
+            type="button"
+            id="purrMusicButton"
+            aria-label="Play background music"
+            title="Play music">♫</button>
+
+    </div>
+
+    <!-- PORTAL BUTTON BEHAVIOUR -->
+    
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const loginContainer = document.getElementById("loginContainer");
+    const userPortal = document.getElementById("userPortal");
+    const adminPortal = document.getElementById("adminPortal");
+    const studentTab = document.getElementById("studentTab");
+    const adminTab = document.getElementById("adminTab");
+
+    function toggleLogin(role) {
+        const isOpen = !loginContainer.classList.contains("login-hidden");
+
+        // Jika borang sedang terbuka, tutup
+        if (isOpen) {
+            loginContainer.classList.add("login-hidden");
+            return;
+        }
+
+        // Jika borang tertutup, buka dan pilih portal
+        loginContainer.classList.remove("login-hidden");
+
+        if (role === "admin") {
+            adminTab.click();
+        } else {
+            studentTab.click();
+        }
+
+        loginContainer.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+    }
+
+    userPortal.addEventListener("click", function (event) {
+        event.preventDefault();
+        toggleLogin("student");
+    });
+
+    adminPortal.addEventListener("click", function (event) {
+        event.preventDefault();
+        toggleLogin("admin");
+    });
+});
+</script>
+</body>
+</html>

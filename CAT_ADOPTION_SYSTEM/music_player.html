@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PurrFect Home - Cat Adoption System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #fff0f7;
+        }
+
+        #websiteFrame {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        /* ONE pink music button only */
+        #musicButton {
+            position: fixed;
+            right: 22px;
+            bottom: 14px;
+            z-index: 999999;
+            width: 56px;
+            height: 56px;
+            padding: 0;
+            border: 2px solid white;
+            border-radius: 50%;
+            background: #ff2796;
+            color: white;
+            font-size: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(255, 39, 150, 0.55);
+        }
+
+        #musicButton:hover {
+            background: #e91582;
+        }
+
+        #musicStatus {
+            display: none;
+            position: fixed;
+            right: 88px;
+            bottom: 29px;
+            z-index: 999999;
+            padding: 9px 12px;
+            border-radius: 18px;
+            background: white;
+            color: #b63d70;
+            font-size: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Keep the website inside this frame -->
+    <iframe
+        id="websiteFrame"
+        src="login%20page/login.html?musicShell=1"
+        title="PurrFect Home Website">
+    </iframe>
+
+    <!-- One music player for the whole framed website -->
+    <audio id="backgroundMusic"
+           src="login%20page/background_music.mp3"
+           loop
+           preload="auto">
+    </audio>
+
+    <span id="musicStatus" role="status">
+        Click to play music
+    </span>
+
+    <button
+        id="musicButton"
+        type="button"
+        title="Play music"
+        aria-label="Play background music">♫</button>
+
+    <script>
+        const frame = document.getElementById("websiteFrame");
+        const music = document.getElementById("backgroundMusic");
+        const button = document.getElementById("musicButton");
+        const status = document.getElementById("musicStatus");
+
+        /*
+         * Hide the login page's own music button.
+         * The music button in this file is the only visible one.
+         */
+        function hideInnerMusicButton() {
+            try {
+                const frameDocument =
+                    frame.contentDocument || frame.contentWindow.document;
+
+                if (!frameDocument) return;
+
+                const innerControl =
+                    frameDocument.getElementById("purrMusicControl");
+
+                if (innerControl) {
+                    innerControl.style.setProperty(
+                        "display", "none", "important"
+                    );
+                }
+
+                const innerButton =
+                    frameDocument.getElementById("purrMusicButton");
+
+                if (innerButton) {
+                    innerButton.style.setProperty(
+                        "display", "none", "important"
+                    );
+                }
+            } catch (error) {
+                console.log("Could not access the inner music control:", error);
+            }
+        }
+
+        frame.addEventListener("load", hideInnerMusicButton);
+
+        button.addEventListener("click", async function () {
+            if (music.paused) {
+                try {
+                    await music.play();
+                } catch (error) {
+                    status.textContent =
+                        "Music could not play. Check the MP3 file.";
+                    status.style.display = "block";
+                    console.error("Music playback error:", error);
+                }
+            } else {
+                music.pause();
+            }
+        });
+
+        music.addEventListener("play", function () {
+            button.textContent = "Ⅱ";
+            button.title = "Pause music";
+            button.setAttribute("aria-label", "Pause background music");
+            status.style.display = "none";
+        });
+
+        music.addEventListener("pause", function () {
+            button.textContent = "♫";
+            button.title = "Play music";
+            button.setAttribute("aria-label", "Play background music");
+        });
+
+        music.addEventListener("error", function () {
+            status.textContent = "Music file not found";
+            status.style.display = "block";
+        });
+    </script>
+
+</body>
+</html>

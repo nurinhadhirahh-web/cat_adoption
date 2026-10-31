@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purrfect Home | Student Homepage</title>
+
+  <link rel="stylesheet" href="homepage.css">
+  <script src="homepage.js" defer></script>
+
+  <style>
+    /* Header dimensions and styling matched to about_us.php */
+    .site-header {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 1000 !important;
+      width: 100% !important;
+      height: 82px !important;
+      min-height: 82px !important;
+      background-color: #fffafd !important;
+      background-image: radial-gradient(#f8dce8 0.65px, transparent 0.65px) !important;
+      background-size: 5px 5px !important;
+      border-bottom: 1px solid #f0dce6 !important;
+      backdrop-filter: blur(14px);
+    }
+    .site-header .nav-wrap {
+      width: min(1200px, calc(100% - 40px)) !important;
+      height: 82px !important;
+      min-height: 82px !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 18px !important;
+      flex-wrap: nowrap;
+    }
+    .site-header .brand {
+      flex-shrink: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      text-decoration: none;
+    }
+    .site-header .brand-mark {
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      display: grid !important;
+      place-items: center !important;
+      flex-shrink: 0 !important;
+      border-radius: 15px !important;
+      background: linear-gradient(135deg, #f58ab6, #d94382) !important;
+      color: #fff !important;
+      font-size: 24px !important;
+      line-height: 1 !important;
+    }
+    .site-header .brand-copy {
+      display: grid !important;
+      line-height: 1.25 !important;
+    }
+    .site-header .brand-copy strong {
+      color: #bd2868 !important;
+      font-size: 17px !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.4px !important;
+    }
+    .site-header .brand-copy small {
+      display: block !important;
+      margin-top: 4px !important;
+      color: #c56a91 !important;
+      font-size: 10px !important;
+      font-weight: 400 !important;
+      letter-spacing: normal !important;
+    }
+    .site-header .main-nav {
+      display: flex !important;
+      flex: 1 1 auto !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: clamp(12px, 1.6vw, 22px) !important;
+      width: auto !important;
+      padding: 0 !important;
+    }
+    .site-header .nav-link {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      min-height: 40px !important;
+      padding: 8px 0 !important;
+      color: #5d5055 !important;
+      font-family: "DM Sans", Arial, sans-serif !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      white-space: nowrap !important;
+      text-decoration: none !important;
+      border: 0 !important;
+      background: transparent !important;
+      transition: color .2s ease;
+    }
+    .site-header .nav-link:hover,
+    .site-header .nav-link.active {
+      color: #c95683 !important;
+    }
+    .site-header .profile-link {
+      gap: 6px !important;
+      padding: 9px 13px !important;
+      border-radius: 16px !important;
+      background: #fbe4ed !important;
+      color: #c93678 !important;
+    }
+    .site-header .main-nav .logout-link {
+      min-height: 38px !important;
+      padding: 9px 15px !important;
+      border: 1px solid #d94382 !important;
+      border-radius: 20px !important;
+      background: #d94382 !important;
+      color: #fff !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+    }
+    .site-header .main-nav .logout-link:hover {
+      background: #bd2868 !important;
+      border-color: #bd2868 !important;
+      color: #fff !important;
+    }
+    .site-header .menu-toggle {
+      display: none !important;
+      background: #fff !important;
+      border: 1px solid #f3dce6 !important;
+      color: #bd3e73 !important;
+      border-radius: 8px !important;
+      padding: 8px 12px !important;
+      cursor: pointer;
+      font: inherit;
+    }
+    @media (max-width: 850px) {
+      .site-header,
+      .site-header .nav-wrap {
+        height: auto !important;
+        min-height: 76px !important;
+      }
+      .site-header .nav-wrap {
+        position: relative;
+        flex-wrap: wrap !important;
+        padding: 10px 0 !important;
+      }
+      .site-header .menu-toggle {
+        display: block !important;
+        margin-left: auto;
+      }
+      .site-header .main-nav {
+        position: absolute !important;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1001;
+        display: none !important;
+        flex: 0 0 100% !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 0 !important;
+        padding: 8px 16px 14px !important;
+        background: #fffafd !important;
+        border: 1px solid #f0dce6 !important;
+        box-shadow: 0 12px 18px rgba(80, 40, 55, .06);
+      }
+      .site-header .main-nav.open {
+        display: flex !important;
+      }
+      .site-header .nav-link {
+        justify-content: flex-start !important;
+        min-height: 40px !important;
+        padding: 10px 4px !important;
+        white-space: normal !important;
+        border-bottom: 1px solid #f8edf2 !important;
+      }
+      .site-header .profile-link {
+        padding: 10px 4px !important;
+        background: transparent !important;
+      }
+      .site-header .main-nav .logout-link {
+        justify-content: center !important;
+        align-self: flex-start;
+        margin-top: 8px;
+        padding: 9px 15px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header and Navigation -->
+  <header class="site-header" id="home">
+    <div class="nav-wrap">
+
+      <a class="brand" href="homepage.html" aria-label="Purrfect Home homepage">
+        <span class="brand-mark" aria-hidden="true">🐾</span>
+        <span class="brand-copy">
+          <strong>Purrfect Home</strong>
+          <small>A little love, a forever home.</small>
+        </span>
+      </a>
+
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        type="button">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+
+        <a class="nav-link active" href="homepage.html">
+          Home
+        </a>
+
+        <a class="nav-link" href="adopt_cat.php">
+          Adopt a Cat
+        </a>
+
+        <a class="nav-link" href="found_cat.php">
+          Found Cats
+        </a>
+
+        <a class="nav-link" href="about_us.php">
+          About Us
+        </a>
+
+        <!-- My Applications -->
+        <a class="nav-link profile-link" href="my_application.php">
+          <span class="profile-icon" aria-hidden="true"></span>
+          <span>My Applications</span>
+        </a>
+
+        <!-- Log Out -->
+        <a
+          class="nav-link logout-link"
+          href="../login%20page/logout.php"
+          onclick="return confirm('Are you sure you want to log out?');">
+          Log Out
+        </a>
+
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero Section -->
+    <section class="hero section-shell" aria-labelledby="heroTitle">
+
+      <div class="hero-copy">
+        <span class="eyebrow">
+          <span class="eyebrow-line"></span>
+          WELCOME TO PURRFECT HOME
+        </span>
+
+        <h1 id="heroTitle">
+          Find a friend.<br>
+          <span>Give a cat a home.</span>
+        </h1>
+
+        <p>
+          Meet adorable cats waiting for adoption, or help a cat in need
+          find a safe and loving home.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#featured">
+            Meet Our Cats <span aria-hidden="true">→</span>
+          </a>
+
+          <a class="text-link" href="about_us.php">
+            Learn about us <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="hero-note">
+          <span class="tiny-heart">♡</span>
+          Every paw deserves a second chance.
+        </div>
+      </div>
+
+<div class="hero-image-frame">
+    <video
+        class="hero-image"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata">
+
+        <source src="cat_video 2.mp4" type="video/mp4">
+
+        Your browser does not support HTML video.
+    </video>
+</div>
+
+
+    
+
+        <span class="decor decor-one" aria-hidden="true">✳</span>
+        <span class="decor decor-two" aria-hidden="true">♡</span>
+      </div>
+
+    </section>
+
+    <!-- Featured Cats Section -->
+    <section
+      class="section-shell featured-section"
+      id="featured"
+      aria-labelledby="featuredTitle">
+
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">YOUR FUTURE COMPANION</span>
+
+          <h2 id="featuredTitle">
+            Meet our featured cats
+            <span class="heading-heart">♡</span>
+          </h2>
+
+          <p>
+            Lovely personalities, looking for a place to call home.
+          </p>
+        </div>
+
+        <a href="adopt_cat.php" class="text-link view-all">
+          View all cats <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div class="cat-grid" id="catGrid">
+
+        <!-- Cat 1 -->
+        <article class="cat-card">
+          <div class="cat-photo-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=700&q=80"
+              alt="Ginger, a curious cat"
+              class="cat-photo">
+
+            <span class="status status-available">
+              Available
+            </span>
+          </div>
+
+          <div class="cat-info">
+            <div>
+              <h3>Ginger</h3>
+              <p>Curious · Affectionate</p>
+            </div>
+
+            <a
+              class="round-arrow"
+              href="adopt_cat.php"
+              aria-label="View cats available for adoption">
+              ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- Cat 2 -->
+        <article class="cat-card">
+          <div class="cat-photo-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=700&q=80"
+              alt="Milo, a lovely cat"
+              class="cat-photo">
+
+            <span class="status status-available">
+              Available
+            </span>
+          </div>
+
+          <div class="cat-info">
+            <div>
+              <h3>Milo</h3>
+              <p>Gentle · Playful</p>
+            </div>
+
+            <a
+              class="round-arrow"
+              href="adopt_cat.php"
+              aria-label="View cats available for adoption">
+              ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- Cat 3 -->
+        <article class="cat-card">
+          <div class="cat-photo-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&w=700&q=80"
+              alt="Luna, a calm cat"
+              class="cat-photo">
+
+            <span class="status status-available">
+              Available
+            </span>
+          </div>
+
+          <div class="cat-info">
+            <div>
+              <h3>Luna</h3>
+              <p>Calm · Sweet</p>
+            </div>
+
+            <a
+              class="round-arrow"
+              href="adopt_cat.php"
+              aria-label="View cats available for adoption">
+              ↗
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="demo-note">
+        Sample cat profiles for the design preview.
+        Real cat listings will be connected to the database later.
+      </p>
+
+    </section>
+
+    <!-- Quick Actions Section -->
+    <section
+      class="quick-section"
+      id="found-cats"
+      aria-labelledby="quickTitle">
+
+      <div class="section-shell">
+        <div class="section-heading quick-heading">
+          <div>
+            <span class="eyebrow">HERE TO HELP</span>
+            <h2 id="quickTitle">What would you like to do?</h2>
+            <p>Choose a shortcut to get started.</p>
+          </div>
+        </div>
+
+        <div class="action-grid">
+
+          <!-- Adopt a Cat -->
+          <a class="action-card" href="adopt_cat.php">
+            <span class="action-icon" aria-hidden="true">♡</span>
+
+            <span class="action-text">
+              <strong>Adopt a Cat</strong>
+              <small>Find a companion to love.</small>
+            </span>
+
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </a>
+
+          <!-- Found Cats -->
+          <a class="action-card" href="found_cat.php">
+            <span class="action-icon" aria-hidden="true">⌕</span>
+
+            <span class="action-text">
+              <strong>Report a Found Cat</strong>
+              <small>Help a cat that needs care.</small>
+            </span>
+
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </a>
+
+          <!-- My Applications -->
+          <a class="action-card" href="my_application.php">
+            <span class="action-icon" aria-hidden="true">☷</span>
+
+            <span class="action-text">
+              <strong>My Applications</strong>
+              <small>Check your adoption requests.</small>
+            </span>
+
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- About Us Preview Section -->
+    <section class="about-section section-shell" id="about">
+
+      <div class="about-mark" aria-hidden="true">♡</div>
+
+      <div class="about-copy">
+        <span class="eyebrow">ABOUT THE SYSTEM</span>
+
+        <h2>Small acts of kindness make a big difference.</h2>
+
+        <p>
+          Purrfect Home helps students view cats available for adoption
+          and report cats they find, supporting a safer and more caring
+          community for animals.
+        </p>
+      </div>
+
+      <a href="about_us.php" class="button button-outline">
+        Learn More <span aria-hidden="true">→</span>
+      </a>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="profile">
+
+    <div class="section-shell footer-main">
+
+      <!-- Footer Brand -->
+      <div class="footer-brand">
+        <a class="brand" href="homepage.html">
+          <span class="brand-mark" aria-hidden="true">🐾</span>
+
+          <span class="brand-copy">
+            <strong>Purrfect Home</strong>
+            <small>A little love, a forever home.</small>
+          </span>
+        </a>
+
+        <p>
+          Helping cats find safe and loving homes, one paw at a time.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+
+        <a href="homepage.html">Home</a>
+        <a href="adopt_cat.php">Adopt a Cat</a>
+        <a href="found_cat.php">Found Cats</a>
+        <a href="my_application.php">My Applications</a>
+        <a href="about_us.php">About Us</a>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-column">
+        <h3>Contact</h3>
+
+        <p>
+          For assistance, contact your system administrator.
+        </p>
+
+        <a href="mailto:admin@purrfecthome.example">
+          admin@purrfecthome.example
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom section-shell">
+      <span>© 2026 Purrfect Home. All rights reserved.</span>
+
+      <span>
+        Made with <span class="footer-heart">♥</span> for cats
+      </span>
+    </div>
+
+  </footer>
+
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+    aria-live="polite">
+  </div>
+
+</body>
+</html>

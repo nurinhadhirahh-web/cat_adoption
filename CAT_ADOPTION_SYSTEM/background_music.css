@@ -1,0 +1,32 @@
+/* Floating pink music button */
+.music-button {
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+    z-index: 99999;
+    width: 54px;
+    height: 54px;
+    border: none;
+    border-radius: 50%;
+    background: #ff69b4;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 105, 180, .4);
+    transition: transform .25s ease, background .25s ease;
+}
+.music-button:hover {
+    background: #e84393;
+    transform: scale(1.1);
+}
+.music-button.is-playing {
+    animation: musicPulse 1.5s infinite;
+}
+@keyframes musicPulse {
+    0%, 100% { box-shadow: 0 4px 15px rgba(255, 105, 180, .4); }
+    50% { box-shadow: 0 4px 22px rgba(255, 105, 180, .85); }
+}
+@media (max-width: 600px) {
+    .music-button { right: 16px; bottom: 16px; width: 48px; height: 48px; }
+}
